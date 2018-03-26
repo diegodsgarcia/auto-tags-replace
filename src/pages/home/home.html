@@ -38,5 +38,5 @@
       </div>
     </ion-col>
   </ion-row>
-  <textarea [(ngModel)]="source"></textarea>
+  <textarea [(ngModel)]="source" (ngModelChange)="this.saveStorages()"></textarea>
 </ion-content>

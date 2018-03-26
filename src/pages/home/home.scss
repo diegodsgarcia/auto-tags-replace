@@ -15,14 +15,14 @@ page-home {
   }
   .word {
     display: flex;
-    margin: 10px 0;
+    padding: 10px 5px;
+    font-size: 16px;
     &__icon {
       cursor: pointer;
       padding-left: 10px;
     }
-  }
-  .source {
-    overflow-x: hidden;
-    background-color: #EFEFEF;
+    &:nth-child(2n+1) {
+      background-color: map-get($colors, light);
+    }
   }
 }

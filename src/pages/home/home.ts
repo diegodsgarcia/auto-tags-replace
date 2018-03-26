@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController, TextInput } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'page-home',
@@ -9,10 +10,17 @@ export class HomePage {
   words: string[] = [];
   typeOfTag: string = "i";
   source: string = "";
+
   constructor(
+    private storage: Storage,
     private alertCtrl: AlertController
   ) {
 
+  }
+
+  ionViewDidLoad() {
+    this.storage.get('source').then((value) => this.source = value || "");
+    this.storage.get('words').then((value) => this.words = value || []);
   }
 
   verifyKeyboardEnter(event: KeyboardEvent, input: TextInput) {
@@ -25,25 +33,18 @@ export class HomePage {
 
     this.words.push(wordTreated);
     this.cleanInput(input);
-    this.convertSource(wordTreated);
+    this.addReplace(wordTreated);
+    this.saveStorages()
+
   }
 
   cleanInput(input: TextInput) {
     input.value = "";
   }
 
-  convertSource(word: string) {
-    this.addReplace(word)
-  }
-
   addReplace(word: string) {
     let regex = new RegExp(`\\b${word}\\b`, 'gm');
     this.source = this.source.replace(regex, `<${this.typeOfTag}>${word}</${this.typeOfTag}>`);
-  }
-
-  removeReplace(word: string) {
-    let regex = new RegExp(`<${this.typeOfTag}>${word}<\/${this.typeOfTag}>`, 'gm');
-    this.source = this.source.replace(regex, word);
   }
 
   removeWords() {
@@ -61,6 +62,7 @@ export class HomePage {
           handler: () => {
             this.words.forEach((word) => this.removeReplace(word));
             this.words = [];
+            this.saveStorages()
           }
         }
       ]
@@ -71,6 +73,17 @@ export class HomePage {
   removeWord(index: number) {
     this.removeReplace(this.words[index]);
     this.words.splice(index, 1);
+    this.saveStorages();
+  }
+
+  removeReplace(word: string) {
+    let regex = new RegExp(`<${this.typeOfTag}>${word}<\/${this.typeOfTag}>`, 'gm');
+    this.source = this.source.replace(regex, word);
+  }
+
+  saveStorages() {
+    this.storage.set('words', this.words);
+    this.storage.set('source', this.source);
   }
 
 }
