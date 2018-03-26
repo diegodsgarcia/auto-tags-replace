@@ -1,3 +1,24 @@
 page-home {
-
+  ion-item.item-md {
+    padding: 0;
+  }
+  textarea {
+    resize: none;
+    min-height: 50vh;
+    width: 100%;
+  }
+  .words {
+    display: flex;
+    max-height: 50vh;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+  .word {
+    display: flex;
+    margin: 10px 0;
+    &__icon {
+      cursor: pointer;
+      padding-left: 10px;
+    }
+  }
 }

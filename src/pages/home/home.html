@@ -1,14 +1,43 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Ionic Blank
+      Tags Replace
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+  <ion-row>
+    <ion-col col-6>
+      <ion-item>
+        <ion-label color="primary" floating>Enter the words here</ion-label>
+        <ion-input #input (keyup)="verifyKeyboardEnter($event, input)"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Type of tag</ion-label>
+        <ion-select [(ngModel)]="typeOfTag">
+          <ion-option value="i" selected>Italic</ion-option>
+          <ion-option value="b">Bold</ion-option>
+        </ion-select>
+      </ion-item>
+      <button ion-button color="primary" (click)="addWord(input)">Add word</button>
+    </ion-col>
+    <ion-col col-6>
+      <div class="words">
+        <div class="word" *ngFor="let word of words; let i = index">
+          <div class="word__text">{{ word }}</div>
+          <ion-icon class="word__icon" name="close" (click)="removeWord(i)"></ion-icon>
+        </div>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-6>
+      <textarea #source></textarea>
+    </ion-col>
+    <ion-col col-6>
+      <textarea></textarea>
+    </ion-col>
+  </ion-row>
+  <button ion-button full color="primary" (click)="convert(source)">Convert</button>
 </ion-content>
