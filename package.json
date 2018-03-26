@@ -1,7 +1,7 @@
 {
   "name": "tags-replace",
   "version": "0.0.1",
-  "author": "Ionic Framework",
+  "author": "diegodsgarcia",
   "homepage": "http://ionicframework.com/",
   "private": true,
   "scripts": {
@@ -35,5 +35,5 @@
     "@ionic/app-scripts": "3.1.8",
     "typescript": "~2.6.2"
   },
-  "description": "An Ionic project"
+  "description": "A project to facilitate the bold and italic processes in html"
 }
