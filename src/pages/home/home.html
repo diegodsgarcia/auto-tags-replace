@@ -8,7 +8,7 @@
 
 <ion-content padding>
   <ion-row>
-    <ion-col col-6>
+    <ion-col col-12 col-sm>
       <ion-item>
         <ion-label color="primary" floating>Enter the words here</ion-label>
         <ion-input #input (keyup)="verifyKeyboardEnter($event, input)"></ion-input>
@@ -20,9 +20,16 @@
           <ion-option value="b">Bold</ion-option>
         </ion-select>
       </ion-item>
-      <button ion-button color="primary" (click)="addWord(input)">Add word</button>
+      <ion-row>
+        <ion-col col-6>
+          <button ion-button full color="primary" (click)="removeWords()">Clean</button>
+        </ion-col>
+        <ion-col col-6>
+          <button ion-button full color="primary" (click)="addWord(input)">Add word</button>
+        </ion-col>
+      </ion-row>
     </ion-col>
-    <ion-col col-6>
+    <ion-col col-12 col-sm>
       <div class="words">
         <div class="word" *ngFor="let word of words; let i = index">
           <div class="word__text">{{ word }}</div>
@@ -31,13 +38,5 @@
       </div>
     </ion-col>
   </ion-row>
-  <ion-row>
-    <ion-col col-6>
-      <textarea #source></textarea>
-    </ion-col>
-    <ion-col col-6>
-      <textarea></textarea>
-    </ion-col>
-  </ion-row>
-  <button ion-button full color="primary" (click)="convert(source)">Convert</button>
+  <textarea [(ngModel)]="source"></textarea>
 </ion-content>

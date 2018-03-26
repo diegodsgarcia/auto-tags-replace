@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, TextInput } from 'ionic-angular';
+import { AlertController, TextInput } from 'ionic-angular';
 
 @Component({
   selector: 'page-home',
@@ -8,7 +8,10 @@ import { NavController, TextInput } from 'ionic-angular';
 export class HomePage {
   words: string[] = [];
   typeOfTag: string = "i";
-  constructor(public navCtrl: NavController) {
+  source: string = "";
+  constructor(
+    private alertCtrl: AlertController
+  ) {
 
   }
 
@@ -18,30 +21,56 @@ export class HomePage {
 
   addWord(input: TextInput) {
     let wordTreated = input.value.trim();
-    if(wordTreated) this.words.push(wordTreated);
+    if(!wordTreated) return;
 
+    this.words.push(wordTreated);
     this.cleanInput(input);
+    this.convertSource(wordTreated);
   }
 
   cleanInput(input: TextInput) {
     input.value = "";
   }
 
+  convertSource(word: string) {
+    this.addReplace(word)
+  }
+
+  addReplace(word: string) {
+    let regex = new RegExp(`\\b${word}\\b`, 'gm');
+    this.source = this.source.replace(regex, `<${this.typeOfTag}>${word}</${this.typeOfTag}>`);
+  }
+
+  removeReplace(word: string) {
+    let regex = new RegExp(`<${this.typeOfTag}>${word}<\/${this.typeOfTag}>`, 'gm');
+    this.source = this.source.replace(regex, word);
+  }
+
+  removeWords() {
+    this.alertCtrl.create({
+      title: 'Are you sure?',
+      subTitle: 'Are you want do this?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Yes',
+          role: 'yes',
+          handler: () => {
+            this.words.forEach((word) => this.removeReplace(word));
+            this.words = [];
+          }
+        }
+      ]
+    })
+    .present();
+  }
+
   removeWord(index: number) {
+    this.removeReplace(this.words[index]);
     this.words.splice(index, 1);
   }
-
-  convert(source: string) {
-    if(!this.words.length) return;
-    this.words.forEach((word) => {
-      this.executeRegex(word);
-    })
-  }
-
-  executeRegex(word: string) {
-    let regex = new RegExp(`\b${word}\b`);
-    console.log(regex);
-  }
-
 
 }
